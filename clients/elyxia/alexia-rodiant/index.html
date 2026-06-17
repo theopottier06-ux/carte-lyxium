@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carte de contact — LYXIUM</title>
+  <meta name="description" content="Carte de contact numérique">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CONFIGURATION CLIENT — modifier uniquement cette section
+       ═══════════════════════════════════════════════════════════ -->
+  <script>
+    const CLIENT = {
+      // Identité
+      prenom:     "Alexia",
+      nom:        "Rodiant",
+      metier:     "Prothésiste ongulaire ELYXIA",
+      entreprise: "ELYXIA",
+      tel:        "+33661047916",
+      telAffiche: "06 61 04 79 16",
+      email:      "contact.elyxia@gmail.com",
+      adresse:    "Grasse, Alpes-Maritimes",
+
+      // Liens réseaux (laisser vide "" pour masquer)
+      instagram:  "",
+      facebook:   "",
+      linkedin:   "",
+      google:     "",
+
+      // Photo (URL ou chemin local — laisser vide pour initiales)
+      photo:      "",
+
+      // Couleur accent client (défaut : or LYXIUM #BCA56B)
+      accent:     "#baa3b3",
+
+      // ── MOTS-CLÉS ─────────────────────────────────────────────
+      keywords: [
+        "prothésiste ongulaire",
+        "nail art",
+        "ongle",
+        "alexia",
+        "Elyxia",
+        "Grasse",
+        "Alpes-Maritimes",
+        "06"
+      ],
+
+      // ── NOTE ──────────────────────────────────────────────────
+      note: "prothésiste ongulaire — Alpes-Maritimes & Var"
+    };
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --noir:   #0a0a0a;
+      --blanc:  #ffffff;
+      --gris:   #1a1a1a;
+      --gris2:  #2a2a2a;
+      --gris3:  #888888;
+      --accent: #BCA56B; /* remplacé dynamiquement */
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--noir);
+      color: var(--blanc);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LAYOUT ── */
+    .card {
+      max-width: 420px;
+      margin: 0 auto;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      padding: 0 0 40px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      position: relative;
+      padding: 48px 28px 32px;
+      border-bottom: 1px solid var(--gris2);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+
+    .avatar-wrap {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gris2);
+    }
+
+    .avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-initials {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 2px;
+    }
+
+    .nom {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .nom span {
+      font-weight: 600;
+    }
+
+    .metier {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 6px;
+    }
+
+    .entreprise {
+      font-size: 12px;
+      color: var(--gris3);
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── CTA PRINCIPAL ── */
+    .cta-save {
+      margin: 28px 28px 0;
+      display: block;
+      background: var(--accent);
+      color: var(--noir);
+      text-align: center;
+      padding: 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      width: calc(100% - 56px);
+      transition: opacity 0.2s;
+    }
+
+    .cta-save:active { opacity: 0.8; }
+
+    /* ── CONTACTS ── */
+    .section {
+      padding: 28px 28px 0;
+    }
+
+    .section-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gris3);
+      margin-bottom: 16px;
+    }
+
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 16px;
+      background: var(--gris);
+      text-decoration: none;
+      color: var(--blanc);
+      transition: background 0.15s;
+    }
+
+    .contact-item:active { background: var(--gris2); }
+
+    .contact-item:first-child { border-radius: 4px 4px 0 0; }
+    .contact-item:last-child  { border-radius: 0 0 4px 4px; }
+    .contact-item:only-child  { border-radius: 4px; }
+
+    .contact-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gris2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--accent);
+    }
+
+    .contact-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .contact-type {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gris3);
+    }
+
+    .contact-value {
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    /* ── RÉSEAUX ── */
+    .reseaux {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .reseau-btn {
+      flex: 1;
+      min-width: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 12px;
+      background: var(--gris);
+      border-radius: 4px;
+      text-decoration: none;
+      color: var(--blanc);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: background 0.15s;
+    }
+
+    .reseau-btn:active { background: var(--gris2); }
+
+    .reseau-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--accent);
+    }
+
+    /* ── GOOGLE AVIS ── */
+    .cta-avis {
+      margin: 8px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      background: var(--gris);
+      border-radius: 4px;
+      text-decoration: none;
+      color: var(--blanc);
+      border-left: 3px solid var(--accent);
+      transition: background 0.15s;
+    }
+
+    .cta-avis:active { background: var(--gris2); }
+
+    .avis-text strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .avis-text span {
+      font-size: 11px;
+      color: var(--gris3);
+    }
+
+    /* ── KEYWORDS ── */
+    .keywords-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .keyword-tag {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gris3);
+      border: 1px solid var(--gris2);
+      padding: 4px 8px;
+      border-radius: 2px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: auto;
+      padding: 32px 28px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .footer-text {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gris3);
+    }
+
+    .footer-brand {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card" id="card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="avatar-wrap" id="avatarWrap"></div>
+    <div class="nom" id="nomEl"></div>
+    <div class="metier" id="metierEl"></div>
+    <div class="entreprise" id="entrepriseEl"></div>
+  </div>
+
+  <!-- CTA ENREGISTRER -->
+  <button class="cta-save" id="btnSave" onclick="telechargerVCard()">
+    Enregistrer le contact
+  </button>
+
+  <!-- COORDONNÉES -->
+  <div class="section" id="sectionContact">
+    <div class="section-label">Coordonnées</div>
+    <div class="contact-list" id="contactList"></div>
+  </div>
+
+  <!-- KEYWORDS -->
+  <div class="section" id="sectionKeywords" style="display:none">
+    <div class="section-label">Spécialités</div>
+    <div class="keywords-wrap" id="keywordsList"></div>
+  </div>
+
+  <!-- RÉSEAUX -->
+  <div class="section" id="sectionReseaux" style="display:none">
+    <div class="section-label">Réseaux</div>
+    <div class="reseaux" id="reseauxList"></div>
+  </div>
+
+  <!-- GOOGLE AVIS -->
+  <div class="section" id="sectionAvis" style="display:none">
+    <div class="section-label">Satisfaction</div>
+    <a class="cta-avis" id="lienAvis" href="#" target="_blank" rel="noopener">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="flex-shrink:0">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      <div class="avis-text">
+        <strong>Laisser un avis Google</strong>
+        <span>Votre retour compte beaucoup</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span class="footer-brand">LYXIUM</span>
+  </div>
+
+</div>
+
+<script>
+  // ── INIT ──────────────────────────────────────────────────────────
+  document.documentElement.style.setProperty('--accent', CLIENT.accent || '#BCA56B');
+
+  // Avatar
+  const avatarWrap = document.getElementById('avatarWrap');
+  if (CLIENT.photo) {
+    avatarWrap.innerHTML = `<img src="${CLIENT.photo}" alt="${CLIENT.prenom}">`;
+  } else {
+    const initiales = (CLIENT.prenom[0] + CLIENT.nom[0]).toUpperCase();
+    avatarWrap.innerHTML = `<span class="avatar-initials">${initiales}</span>`;
+  }
+
+  // Nom / métier
+  document.getElementById('nomEl').innerHTML = `${CLIENT.prenom} <span>${CLIENT.nom}</span>`;
+  document.getElementById('metierEl').textContent = CLIENT.metier;
+  document.getElementById('entrepriseEl').textContent = CLIENT.entreprise;
+
+  // Titre page
+  document.title = `${CLIENT.prenom} ${CLIENT.nom} — ${CLIENT.metier}`;
+
+  // Contacts
+  const contactList = document.getElementById('contactList');
+  const contacts = [];
+
+  if (CLIENT.tel) contacts.push({
+    href: `tel:${CLIENT.tel}`,
+    type: 'Téléphone',
+    value: CLIENT.telAffiche,
+    icon: `<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`
+  });
+
+  if (CLIENT.email) contacts.push({
+    href: `mailto:${CLIENT.email}`,
+    type: 'Email',
+    value: CLIENT.email,
+    icon: `<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`
+  });
+
+  if (CLIENT.site) contacts.push({
+    href: CLIENT.site,
+    type: 'Site web',
+    value: CLIENT.siteAffiche,
+    icon: `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`
+  });
+
+  if (CLIENT.adresse) contacts.push({
+    href: `https://maps.google.com/?q=${encodeURIComponent(CLIENT.adresse)}`,
+    type: 'Adresse',
+    value: CLIENT.adresse,
+    icon: `<svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`
+  });
+
+  contacts.forEach((c, i) => {
+    const el = document.createElement('a');
+    el.className = 'contact-item';
+    el.href = c.href;
+    if (c.href.startsWith('http')) { el.target = '_blank'; el.rel = 'noopener'; }
+    el.innerHTML = `
+      <div class="contact-icon">${c.icon}</div>
+      <div class="contact-text">
+        <span class="contact-type">${c.type}</span>
+        <span class="contact-value">${c.value}</span>
+      </div>
+    `;
+    contactList.appendChild(el);
+  });
+
+  // Keywords
+  const keywordsList    = document.getElementById('keywordsList');
+  const sectionKeywords = document.getElementById('sectionKeywords');
+  if (CLIENT.keywords && CLIENT.keywords.length > 0) {
+    sectionKeywords.style.display = 'block';
+    CLIENT.keywords.forEach(kw => {
+      const tag = document.createElement('span');
+      tag.className = 'keyword-tag';
+      tag.textContent = kw;
+      keywordsList.appendChild(tag);
+    });
+  }
+
+  // Réseaux sociaux
+  const reseauxList = document.getElementById('reseauxList');
+  const sectionReseaux = document.getElementById('sectionReseaux');
+  const reseaux = [];
+
+  if (CLIENT.instagram) reseaux.push({
+    href: CLIENT.instagram, label: 'Instagram',
+    icon: `<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>`
+  });
+
+  if (CLIENT.facebook) reseaux.push({
+    href: CLIENT.facebook, label: 'Facebook',
+    icon: `<svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`
+  });
+
+  if (CLIENT.linkedin) reseaux.push({
+    href: CLIENT.linkedin, label: 'LinkedIn',
+    icon: `<svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`
+  });
+
+  if (reseaux.length > 0) {
+    sectionReseaux.style.display = 'block';
+    reseaux.forEach(r => {
+      const el = document.createElement('a');
+      el.className = 'reseau-btn';
+      el.href = r.href;
+      el.target = '_blank';
+      el.rel = 'noopener';
+      el.innerHTML = `${r.icon}<span>${r.label}</span>`;
+      reseauxList.appendChild(el);
+    });
+  }
+
+  // Google Avis
+  if (CLIENT.google) {
+    document.getElementById('sectionAvis').style.display = 'block';
+    document.getElementById('lienAvis').href = CLIENT.google;
+  }
+
+  // ── GÉNÉRATION VCARD ──────────────────────────────────────────────
+  function telechargerVCard() {
+    // Construction de la note : keywords + note libre
+    const noteParties = [];
+    if (CLIENT.keywords && CLIENT.keywords.length > 0) {
+      noteParties.push(CLIENT.keywords.join(' • '));
+    }
+    if (CLIENT.note) noteParties.push(CLIENT.note);
+    const noteLine = noteParties.length > 0 ? `NOTE:${noteParties.join(' | ')}` : '';
+
+    // CATEGORIES pour indexation (virgule-séparées, sans espaces)
+    const categoriesLine = CLIENT.keywords && CLIENT.keywords.length > 0
+      ? `CATEGORIES:${CLIENT.keywords.join(',')}`
+      : '';
+
+    const vcard = [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      `FN:${CLIENT.prenom} ${CLIENT.nom}`,
+      `N:${CLIENT.nom};${CLIENT.prenom};;;`,
+      `ORG:${CLIENT.entreprise}`,
+      `TITLE:${CLIENT.metier}`,
+      CLIENT.tel    ? `TEL;TYPE=CELL:${CLIENT.tel}` : '',
+      CLIENT.email  ? `EMAIL:${CLIENT.email}` : '',
+      CLIENT.site   ? `URL:${CLIENT.site}` : '',
+      CLIENT.adresse ? `ADR;TYPE=WORK:;;${CLIENT.adresse};;;;` : '',
+      noteLine,
+      categoriesLine,
+      'END:VCARD'
+    ].filter(Boolean).join('\r\n');
+
+    const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `${CLIENT.prenom}-${CLIENT.nom}.vcf`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+
+</body>
+</html>

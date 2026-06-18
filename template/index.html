@@ -29,8 +29,9 @@
       linkedin:   "",
       google:     "",
 
-      // Photo (URL ou chemin local — laisser vide pour initiales)
-      photo:      "",
+      // Logo (chemin absolu — laisser vide pour initiales)
+      // ✅ Dépose ton logo.png dans le dossier du client
+      photo:      "",  // ex: "/clients/nom-entreprise/prenom-nom/logo.png"
 
       // Couleur accent client (défaut : or LYXIUM #BCA56B)
       accent:     "#BCA56B",
@@ -111,13 +112,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--gris2);
+      background: var(--noir);
     }
 
+    /* ── LOGO dans le rond ── */
     .avatar-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width: 65%;
+      height: 65%;
+      object-fit: contain;
     }
 
     .avatar-initials {
@@ -425,10 +427,18 @@
   // ── INIT ──────────────────────────────────────────────────────────
   document.documentElement.style.setProperty('--accent', CLIENT.accent || '#BCA56B');
 
-  // Avatar
+  // Avatar — logo ou initiales en fallback
   const avatarWrap = document.getElementById('avatarWrap');
   if (CLIENT.photo) {
-    avatarWrap.innerHTML = `<img src="${CLIENT.photo}" alt="${CLIENT.prenom}">`;
+    const img = document.createElement('img');
+    img.src = CLIENT.photo;
+    img.alt = CLIENT.entreprise;
+    img.onerror = function() {
+      avatarWrap.removeChild(img);
+      const initiales = (CLIENT.prenom[0] + CLIENT.nom[0]).toUpperCase();
+      avatarWrap.innerHTML = `<span class="avatar-initials">${initiales}</span>`;
+    };
+    avatarWrap.appendChild(img);
   } else {
     const initiales = (CLIENT.prenom[0] + CLIENT.nom[0]).toUpperCase();
     avatarWrap.innerHTML = `<span class="avatar-initials">${initiales}</span>`;

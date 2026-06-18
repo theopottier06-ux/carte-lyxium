@@ -445,11 +445,11 @@
 
   // Nom / métier
   document.getElementById('nomEl').innerHTML = `${CLIENT.prenom} <span>${CLIENT.nom}</span>`;
-  document.getElementById('metierEl').textContent = CLIENT.metier;
+  document.getElementById('metierEl').textContent = CLIENT.fonction;
   document.getElementById('entrepriseEl').textContent = CLIENT.entreprise;
 
   // Titre page
-  document.title = `${CLIENT.prenom} ${CLIENT.nom} — ${CLIENT.metier}`;
+  document.title = `${CLIENT.prenom} ${CLIENT.nom} — ${CLIENT.fonction}`;
 
   // Contacts
   const contactList = document.getElementById('contactList');
@@ -571,7 +571,7 @@
       `FN:${CLIENT.prenom} ${CLIENT.nom}`,
       `N:${CLIENT.nom};${CLIENT.prenom};;;`,
       `ORG:${CLIENT.entreprise}`,
-      `TITLE:${CLIENT.metier}`,
+      `TITLE:${CLIENT.fonction}`,
       CLIENT.tel    ? `TEL;TYPE=CELL:${CLIENT.tel}` : '',
       CLIENT.email  ? `EMAIL:${CLIENT.email}` : '',
       CLIENT.site   ? `URL:${CLIENT.site}` : '',

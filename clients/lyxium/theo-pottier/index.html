@@ -29,8 +29,9 @@
       linkedin:   "",
       google:     "",
 
-      // Photo (URL ou chemin local — laisser vide pour initiales)
-      photo:      "",
+      // Logo (chemin relatif — laisser vide pour initiales)
+      // ✅ Dépose ton logo.png (fond transparent) dans le même dossier que ce fichier
+      photo:      "./logo.png",
 
       // Couleur accent client (défaut : or LYXIUM #BCA56B)
       accent:     "#BCA56B",
@@ -65,7 +66,7 @@
       --gris:   #1a1a1a;
       --gris2:  #2a2a2a;
       --gris3:  #888888;
-      --accent: #BCA56B; /* remplacé dynamiquement */
+      --accent: #BCA56B;
     }
 
     html, body {
@@ -115,10 +116,11 @@
       background: var(--gris2);
     }
 
+    /* ── LOGO dans le rond ── */
     .avatar-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width: 65%;
+      height: 65%;
+      object-fit: contain;
     }
 
     .avatar-initials {
@@ -345,14 +347,6 @@
       gap: 8px;
     }
 
-    .footer-text {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gris3);
-    }
-
     .footer-brand {
       font-family: 'Montserrat', sans-serif;
       font-size: 11px;
@@ -426,10 +420,19 @@
   // ── INIT ──────────────────────────────────────────────────────────
   document.documentElement.style.setProperty('--accent', CLIENT.accent || '#BCA56B');
 
-  // Avatar
+  // Avatar — logo ou initiales en fallback
   const avatarWrap = document.getElementById('avatarWrap');
   if (CLIENT.photo) {
-    avatarWrap.innerHTML = `<img src="${CLIENT.photo}" alt="${CLIENT.prenom}">`;
+    const img = document.createElement('img');
+    img.src = CLIENT.photo;
+    img.alt = CLIENT.entreprise;
+    // Fallback sur initiales si le logo ne charge pas
+    img.onerror = function() {
+      avatarWrap.removeChild(img);
+      const initiales = (CLIENT.prenom[0] + CLIENT.nom[0]).toUpperCase();
+      avatarWrap.innerHTML = `<span class="avatar-initials">${initiales}</span>`;
+    };
+    avatarWrap.appendChild(img);
   } else {
     const initiales = (CLIENT.prenom[0] + CLIENT.nom[0]).toUpperCase();
     avatarWrap.innerHTML = `<span class="avatar-initials">${initiales}</span>`;
@@ -475,7 +478,7 @@
     icon: `<svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`
   });
 
-  contacts.forEach((c, i) => {
+  contacts.forEach((c) => {
     const el = document.createElement('a');
     el.className = 'contact-item';
     el.href = c.href;
@@ -504,7 +507,7 @@
   }
 
   // Réseaux sociaux
-  const reseauxList = document.getElementById('reseauxList');
+  const reseauxList    = document.getElementById('reseauxList');
   const sectionReseaux = document.getElementById('sectionReseaux');
   const reseaux = [];
 
@@ -544,7 +547,6 @@
 
   // ── GÉNÉRATION VCARD ──────────────────────────────────────────────
   function telechargerVCard() {
-    // Construction de la note : keywords + note libre
     const noteParties = [];
     if (CLIENT.keywords && CLIENT.keywords.length > 0) {
       noteParties.push(CLIENT.keywords.join(' • '));
@@ -552,7 +554,6 @@
     if (CLIENT.note) noteParties.push(CLIENT.note);
     const noteLine = noteParties.length > 0 ? `NOTE:${noteParties.join(' | ')}` : '';
 
-    // CATEGORIES pour indexation (virgule-séparées, sans espaces)
     const categoriesLine = CLIENT.keywords && CLIENT.keywords.length > 0
       ? `CATEGORIES:${CLIENT.keywords.join(',')}`
       : '';

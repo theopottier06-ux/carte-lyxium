@@ -12,14 +12,16 @@
   <script>
     const CLIENT = {
       // Identité
-      prenom:     "Alexia",
+      prenom:     "PRENOM",
       nom:        "Rodiant",
-      metier:     "Prothésiste ongulaire ELYXIA",
+      fonction:   "Prothésiste ongulaire",
       entreprise: "ELYXIA",
-      tel:        "+33661047916",
-      telAffiche: "06 61 04 79 16",
-      email:      "contact.elyxia@gmail.com",
-      adresse:    "Grasse, Alpes-Maritimes",
+      tel:        "+33600000000",
+      telAffiche: "06 00 00 00 00",
+      email:      "email@domaine.fr",
+      adresse:    "Ville, Département",
+      site:       "",
+      siteAffiche:"",
 
       // Liens réseaux (laisser vide "" pour masquer)
       instagram:  "",
@@ -27,8 +29,9 @@
       linkedin:   "",
       google:     "",
 
-      // Photo (URL ou chemin local — laisser vide pour initiales)
-      photo:      "",
+      // Logo (chemin absolu — laisser vide pour initiales)
+      // ✅ Dépose ton logo.png dans le dossier du client
+      photo:      "/clients/lyxium/alexia-rodiant/logo.png",
 
       // Couleur accent client (défaut : or LYXIUM #BCA56B)
       accent:     "#BCA56B",
@@ -39,10 +42,10 @@
         "nail art",
         "ongle",
         "alexia",
-        "Elyxia",
-        "Grasse",
-        "Alpes-Maritimes",
-        "06"
+        "ENTREPRISE",
+        "entreprise",
+        "ville",
+        "departement"
       ],
 
       // ── NOTE ──────────────────────────────────────────────────
@@ -108,13 +111,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--gris2);
+      background: var(--noir);
     }
 
+    /* ── LOGO dans le rond ── */
     .avatar-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
     }
 
     .avatar-initials {
@@ -353,7 +357,7 @@
       font-family: 'Montserrat', sans-serif;
       font-size: 11px;
       font-weight: 700;
-      color: var(--accent);
+      color: #BCA56B; /* or LYXIUM fixe */
       letter-spacing: 4px;
       text-transform: uppercase;
     }
@@ -422,10 +426,18 @@
   // ── INIT ──────────────────────────────────────────────────────────
   document.documentElement.style.setProperty('--accent', CLIENT.accent || '#BCA56B');
 
-  // Avatar
+  // Avatar — logo ou initiales en fallback
   const avatarWrap = document.getElementById('avatarWrap');
   if (CLIENT.photo) {
-    avatarWrap.innerHTML = `<img src="${CLIENT.photo}" alt="${CLIENT.prenom}">`;
+    const img = document.createElement('img');
+    img.src = CLIENT.photo;
+    img.alt = CLIENT.entreprise;
+    img.onerror = function() {
+      avatarWrap.removeChild(img);
+      const initiales = (CLIENT.prenom[0] + CLIENT.nom[0]).toUpperCase();
+      avatarWrap.innerHTML = `<span class="avatar-initials">${initiales}</span>`;
+    };
+    avatarWrap.appendChild(img);
   } else {
     const initiales = (CLIENT.prenom[0] + CLIENT.nom[0]).toUpperCase();
     avatarWrap.innerHTML = `<span class="avatar-initials">${initiales}</span>`;
@@ -433,11 +445,11 @@
 
   // Nom / métier
   document.getElementById('nomEl').innerHTML = `${CLIENT.prenom} <span>${CLIENT.nom}</span>`;
-  document.getElementById('metierEl').textContent = CLIENT.metier;
+  document.getElementById('metierEl').textContent = CLIENT.fonction;
   document.getElementById('entrepriseEl').textContent = CLIENT.entreprise;
 
   // Titre page
-  document.title = `${CLIENT.prenom} ${CLIENT.nom} — ${CLIENT.metier}`;
+  document.title = `${CLIENT.prenom} ${CLIENT.nom} — ${CLIENT.fonction}`;
 
   // Contacts
   const contactList = document.getElementById('contactList');
@@ -559,7 +571,7 @@
       `FN:${CLIENT.prenom} ${CLIENT.nom}`,
       `N:${CLIENT.nom};${CLIENT.prenom};;;`,
       `ORG:${CLIENT.entreprise}`,
-      `TITLE:${CLIENT.metier}`,
+      `TITLE:${CLIENT.fonction}`,
       CLIENT.tel    ? `TEL;TYPE=CELL:${CLIENT.tel}` : '',
       CLIENT.email  ? `EMAIL:${CLIENT.email}` : '',
       CLIENT.site   ? `URL:${CLIENT.site}` : '',
